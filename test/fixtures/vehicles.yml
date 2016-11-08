@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  plate: MyString
+  frame: MyString
+  engine: MyString
+  cityname: MyString
+  citycode: 1
+
+two:
+  plate: MyString
+  frame: MyString
+  engine: MyString
+  cityname: MyString
+  citycode: 1

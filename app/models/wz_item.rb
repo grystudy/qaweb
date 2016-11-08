@@ -1,0 +1,2 @@
+class WzItem < ApplicationRecord
+end
