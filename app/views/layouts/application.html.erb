@@ -1,14 +1,37 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>QAWeb</title>
-    <%= csrf_meta_tags %>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+  <title>违章接口验证</title>
+  <%= csrf_meta_tags %>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <%= yield :head %>
+</head>
 
-  <body>
-    <%= yield %>
-  </body>
+<body>
+<section class="wrapper scrollable">
+  <nav class="main-menu">
+    <ul>
+      <li>
+        <a href=<%= wz_cases_path %>>
+          <i class="icon-table nav-icon"></i>
+          <span class="nav-text">
+          主页
+          </span>
+        </a>
+      </li>
+      <li>
+        <a href=<%= new_wz_case_path %>>
+          <i class="icon-table1 nav-icon"></i>
+          <span class="nav-text">
+          上传车辆
+          </span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <%= yield %>
+</section>
+</body>
 </html>

@@ -1,0 +1,35 @@
+<h1>违章测试</h1>
+<%= will_paginate @wz_cases %>
+<div style="overflow-x: auto; overflow-y: auto;width:100%;">
+  <table>
+    <thead>
+    <tr>
+      <th>id</th>
+      <th>车牌</th>
+      <th>车架</th>
+      <th>发动机</th>
+      <th>标准结果</th>
+      <th>当前结果</th>
+      <th>结果分析</th>
+      <th>删除记录</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @wz_cases.each do |item| %>
+        <tr>
+          <td><%= link_to item.id, wz_case_path(item.region) %></td>
+          <td><%= item.oiltype.standard.name %></td>
+          <td><%= item.oiltype.name %></td>
+          <td><%= item.value %></td>
+          <td><%= item.user ? item.user.name : nil %></td>
+          <td><%= item.revision ? (item.revision.id.to_s + " " + item.revision.name) : nil %></td>
+          <td><%= item.local_updated_at %></td>
+          <td><%= link_to "删除记录", record_path(item), method: :delete %></td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+  <a href=<%= begin_wz_cases_path %>>
+    <button class="btn btn-default w3ls-button">上传服务器</button>
+  </a>
+</div>

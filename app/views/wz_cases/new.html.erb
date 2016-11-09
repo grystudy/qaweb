@@ -1,0 +1,7 @@
+<h1>上传车辆信息</h1>
+<%= form_tag(wz_cases_path, method: "post",:multipart=>true) do%>
+    <label for = "inputMainData"> 车辆信息数据：</label>
+    <input type="file" name="fileMain" id = "inputMainData">
+    <!--<p class = "instructions"> xlsx文件</p> -->
+    <input type="submit" value ="上传">
+<% end %>
