@@ -1,5 +1,42 @@
+<% content_for :nav do %>
+    <ul>
+      <li class="has-subnav">
+        <a href=<%= confirm_wz_cases_path%>>
+          <i class="icon-angle-right" aria-hidden="true"></i>
+          <span class="nav-text">
+          设为基准
+          </span>
+        </a>
+      </li>
+      <li class="has-subnav">
+        <a href=<%= wz_cases_path + "?type=0" %>>
+          <i class="icon-angle-right" aria-hidden="true"></i>
+          <span class="nav-text">
+          一致
+          </span>
+        </a>
+      </li>
+      <li class="has-subnav">
+        <a href=<%= wz_cases_path + "?type=1" %>>
+          <i class="icon-angle-right" aria-hidden="true"></i>
+          <span class="nav-text">
+          结果包含基准
+          </span>
+        </a>
+      </li>
+      <li class="has-subnav">
+        <a href=<%= wz_cases_path + "?type=2" %>>
+          <i class="icon-angle-right" aria-hidden="true"></i>
+          <span class="nav-text">
+          不一致
+          </span>
+        </a>
+      </li>
+    </ul>
+<% end %>
+
 <h1>违章测试</h1>
-<%= will_paginate @wz_cases %>
+<%= will_paginate @wz_cases unless @wz_cases.is_a? Array %>
 <div style="overflow-x: auto; overflow-y: auto;width:100%;">
   <table>
     <thead>
@@ -24,8 +61,8 @@
           <td><%= item.vehicle.frame %></td>
           <td><%= item.vehicle.engine %></td>
           <td><%= item.get_wz_items.size %></td>
-          <td><%= @res_hash.fetch(item.id,[]).size %></td>
-          <td><%=  %></td>
+          <td><%= @res_hash.fetch(item.id, []).size %></td>
+          <td><%= %></td>
           <td><%= link_to "删除记录", wz_case_path(item), method: :delete %></td>
         </tr>
     <% end %>

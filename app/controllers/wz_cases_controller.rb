@@ -1,10 +1,27 @@
 require 'FileHelper'
 require 'query_helper'
+require 'json'
 class WzCasesController < ApplicationController
   @@res_hash = {}
+  @@same = []
+  @@contain = []
+  @@diff = []
+
   def index
     @res_hash = @@res_hash
-    @wz_cases = WzCase.page(params[:page]).per_page(50)
+    per_page = 10
+    items = []
+    case params[:type]
+      when "0"
+        items = @@same
+      when "1"
+        items = @@contain
+      when "2"
+        items = @@diff
+      else
+        items = WzCase.all.page(params[:page]).per_page(per_page)
+    end
+    @wz_cases = items
   end
 
   def create
@@ -41,7 +58,36 @@ class WzCasesController < ApplicationController
   end
 
   def begin
-    @@res_hash = QueryHelper.loop WzCase.all
+    res_hash = QueryHelper.loop WzCase.all
+    @@res_hash = res_hash
+    WzCase.all.each do |wzcase|
+      res_ = res_hash.fetch(wzcase.id, nil)
+      unless res_
+        @@diff << wzcase
+        next
+      end
+      base = wzcase.get_wz_items
+      if base == res_
+        @@same << wzcase
+        next
+      end
+
+      unless base.index { |e_| !res_.index { |sub_e| sub_e == e_ } }
+        @@contain << wzcase
+        next
+      end
+
+      @@diff << wzcase
+    end
+    redirect_to wz_cases_path, notice: "ok!"
+  end
+
+  def confirm
+    @@res_hash.each do |res|
+      wz = WzCase.find(res[0])
+      wz.create_wz_item(info: res[1].to_json)
+      wz.save
+    end
     redirect_to wz_cases_path, notice: "ok!"
   end
 end

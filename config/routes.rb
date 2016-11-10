@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :wz_cases do
     collection do
       get 'begin'
+      get 'confirm'
     end
   end
   root 'wz_cases#index'
