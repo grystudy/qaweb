@@ -5,6 +5,7 @@
     <thead>
     <tr>
       <th>id</th>
+      <th>城市</th>
       <th>车牌</th>
       <th>车架</th>
       <th>发动机</th>
@@ -17,19 +18,20 @@
     <tbody>
     <% @wz_cases.each do |item| %>
         <tr>
-          <td><%= link_to item.id, wz_case_path(item.region) %></td>
-          <td><%= item.oiltype.standard.name %></td>
-          <td><%= item.oiltype.name %></td>
-          <td><%= item.value %></td>
-          <td><%= item.user ? item.user.name : nil %></td>
-          <td><%= item.revision ? (item.revision.id.to_s + " " + item.revision.name) : nil %></td>
-          <td><%= item.local_updated_at %></td>
-          <td><%= link_to "删除记录", record_path(item), method: :delete %></td>
+          <td><%= link_to item.id, wz_case_path(item) %></td>
+          <td><%= item.vehicle.cityname %></td>
+          <td><%= item.vehicle.plate %></td>
+          <td><%= item.vehicle.frame %></td>
+          <td><%= item.vehicle.engine %></td>
+          <td><%= item.get_wz_items.size %></td>
+          <td><%= @res_hash.fetch(item.id,[]).size %></td>
+          <td><%=  %></td>
+          <td><%= link_to "删除记录", wz_case_path(item), method: :delete %></td>
         </tr>
     <% end %>
     </tbody>
   </table>
   <a href=<%= begin_wz_cases_path %>>
-    <button class="btn btn-default w3ls-button">上传服务器</button>
+    <button class="btn btn-default w3ls-button">开始测试</button>
   </a>
 </div>

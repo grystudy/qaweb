@@ -1,4 +1,6 @@
 source 'https://rubygems.org'
+gem 'httparty', '~> 0.14.0'
+gem 'roo', '~> 2.5.0'
 gem 'pg'
 gem 'will_paginate','~>3.1.0'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
