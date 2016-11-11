@@ -2,26 +2,16 @@ require 'FileHelper'
 require 'query_helper'
 require 'json'
 class WzCasesController < ApplicationController
-  @@res_hash = {}
-  @@same = []
-  @@contain = []
-  @@diff = []
-
   def index
-    @res_hash = @@res_hash
-    per_page = 10
-    items = []
-    case params[:type]
-      when "0"
-        items = @@same
-      when "1"
-        items = @@contain
-      when "2"
-        items = @@diff
-      else
-        items = WzCase.all.page(params[:page]).per_page(per_page)
+    per_page = 28
+    items = nil
+    t = params[:type]
+    if t
+      items = WzCase.where(status: t.to_i)
+    else
+      items = WzCase.all
     end
-    @wz_cases = items
+    @wz_cases = items.order(id: :asc).page(params[:page]).per_page(per_page)
   end
 
   def create
@@ -43,12 +33,15 @@ class WzCasesController < ApplicationController
   end
 
   def show
+    @item = WzCase.find(params[:id])
   end
 
   def edit
   end
 
   def update
+    set_confirm WzCase.find(params[:id])
+    redirect_to wz_cases_path, notice: "ok!"
   end
 
   def destroy
@@ -58,36 +51,53 @@ class WzCasesController < ApplicationController
   end
 
   def begin
+    same =0
+    contain = 1
+    diff = 2
     res_hash = QueryHelper.loop WzCase.all
-    @@res_hash = res_hash
     WzCase.all.each do |wzcase|
       res_ = res_hash.fetch(wzcase.id, nil)
       unless res_
-        @@diff << wzcase
+        wzcase.status = diff
+        wzcase.wz_query = nil
+        wzcase.save
         next
       end
       base = wzcase.get_wz_items
       if base == res_
-        @@same << wzcase
+        wzcase.status = same
+        wzcase.save
         next
       end
-
+      wzcase.create_wz_query(info: res_.to_json)
       unless base.index { |e_| !res_.index { |sub_e| sub_e == e_ } }
-        @@contain << wzcase
+        wzcase.status = contain
+        wzcase.save
         next
       end
-
-      @@diff << wzcase
+      wzcase.status = diff
+      wzcase.save
     end
     redirect_to wz_cases_path, notice: "ok!"
   end
 
   def confirm
-    @@res_hash.each do |res|
-      wz = WzCase.find(res[0])
-      wz.create_wz_item(info: res[1].to_json)
-      wz.save
+    WzCase.all.each do |cas|
+      set_confirm cas
     end
     redirect_to wz_cases_path, notice: "ok!"
+  end
+
+  def set_confirm cas
+    return unless cas
+    return if cas.status == 0
+    cas.status = 0
+    cas.save
+    if cas.wz_query.nil?
+      cas.wz_item = nil
+      cas.save
+      return
+    end
+    cas.create_wz_item(info: cas.wz_query.info)
   end
 end

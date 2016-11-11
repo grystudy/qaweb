@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161108092632) do
+ActiveRecord::Schema.define(version: 20161111012440) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(version: 20161108092632) do
     t.integer  "vehicle_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "status"
     t.index ["vehicle_id"], name: "index_wz_cases_on_vehicle_id", using: :btree
   end
 
@@ -41,6 +42,15 @@ ActiveRecord::Schema.define(version: 20161108092632) do
     t.index ["wz_case_id"], name: "index_wz_items_on_wz_case_id", using: :btree
   end
 
+  create_table "wz_queries", force: :cascade do |t|
+    t.text     "info"
+    t.integer  "wz_case_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["wz_case_id"], name: "index_wz_queries_on_wz_case_id", using: :btree
+  end
+
   add_foreign_key "wz_cases", "vehicles"
   add_foreign_key "wz_items", "wz_cases"
+  add_foreign_key "wz_queries", "wz_cases"
 end

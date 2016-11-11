@@ -66,7 +66,7 @@ class QueryHelper
               his_array = response.weizhang_histories
               case rspcode
                 when 20000, 21000
-                  result_hash[uuitem.vehicle.id] = his_array if his_array
+                  result_hash[uuitem.id] = his_array if his_array && his_array.length > 0
                 when 50101
                 else
               end
@@ -96,8 +96,8 @@ class WeizhangInfo
     @data_hash = nil
     car_info = @car_info
     return nil unless @car_info
-    api_id = 2
-    app_key = "c1a0dc80-3699-0134-fb7d-00163e081329"
+    api_id = 18
+    app_key = "08ecf6d0-89e4-0134-864d-0242c0a80007"
     timestamp = Time.now.getutc.to_i
     sign = Digest::MD5.hexdigest(api_id.to_s + car_info + timestamp.to_s + app_key)
     res = self.class.get("/traffic_violation/api/v1/query", {query: {car_info: car_info, api_id: api_id, sign: sign, timestamp: timestamp}})

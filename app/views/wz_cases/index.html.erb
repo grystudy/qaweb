@@ -57,12 +57,12 @@
         <tr>
           <td><%= link_to item.id, wz_case_path(item) %></td>
           <td><%= item.vehicle.cityname %></td>
-          <td><%= item.vehicle.plate %></td>
+          <td><%= link_to item.vehicle.plate, wz_case_path(item)  %></td>
           <td><%= item.vehicle.frame %></td>
           <td><%= item.vehicle.engine %></td>
-          <td><%= item.get_wz_items.size %></td>
-          <td><%= @res_hash.fetch(item.id, []).size %></td>
-          <td><%= %></td>
+          <td><%= link_to item.get_wz_items.size, wz_case_path(item)  %></td>
+          <td><%= link_to item.get_wz_queries.size, wz_case_path(item)  %></td>
+          <td><%= link_to WzCase.get_des(item.status), wz_case_path(item) %></td>
           <td><%= link_to "删除记录", wz_case_path(item), method: :delete %></td>
         </tr>
     <% end %>

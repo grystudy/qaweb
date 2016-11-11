@@ -1,2 +1,33 @@
-<h1>WzCases#show</h1>
-<p>Find me in app/views/wz_cases/show.html.erb</p>
+<div class="progressbar-heading grids-heading">
+  <h3><%=@item.id.to_s + " " + @item.vehicle.plate%></h3>
+</div>
+<%= form_tag(wz_case_path(@item), method: "put", class: "form-inline") do %>
+    <% [@item.wz_item,@item.wz_query].each_with_index do |wz,i| %>
+        <div class="inline-form widget-shadow">
+          <div class="form-title">
+            <h4><%= i == 0 ? "基准" : "当前结果" %></h4>
+          </div>
+          <table>
+            <thead>
+            <tr>
+              <th>序号</th>
+              <th>时间</th>
+              <th>地点</th>
+              <th>详细</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% all = wz ? WzCase.parse(wz):[] %>
+            <% all.each_with_index do |wz_i,wz_index| %>
+                <tr>
+                  <td><%= wz_index + 1 %></td>
+                  <td><%= wz_i.fetch(:time,"") %></td>
+                  <td><%= wz_i.fetch(:address,"") %></td>
+                  <td><%= wz_i.fetch(:info,"") %></td>
+                </tr>
+            <% end %>
+            </tbody>
+          </table>
+    <% end %>
+    <button type="submit" class="btn btn-default w3ls-button">设置为基准</button>
+<% end %>
