@@ -46,7 +46,7 @@ class WzCasesController < ApplicationController
 
   def destroy
     @item = WzCase.find(params[:id])
-    @item.destroy
+    @item.delete
     redirect_to wz_cases_path, notice: "删除成功!"
   end
 
