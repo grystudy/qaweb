@@ -1,7 +1,7 @@
 class WzCase < ApplicationRecord
   belongs_to :vehicle
-  has_one :wz_item
-  has_one :wz_query
+  has_one :wz_item, :dependent=> :delete
+  has_one :wz_query,:dependent=> :delete
 
   def get_wz_items
     WzCase.parse wz_item

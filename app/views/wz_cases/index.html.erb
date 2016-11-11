@@ -1,7 +1,7 @@
 <% content_for :nav do %>
     <ul>
       <li class="has-subnav">
-        <a href=<%= confirm_wz_cases_path%>>
+        <a href=<%= confirm_wz_cases_path %>>
           <i class="icon-angle-right" aria-hidden="true"></i>
           <span class="nav-text">
           设为基准
@@ -35,7 +35,9 @@
     </ul>
 <% end %>
 
-<h1>违章测试</h1>
+<a href=<%= begin_wz_cases_path %>>
+  <button class="btn btn-default w3ls-button">开始测试</button>
+</a>
 <%= will_paginate @wz_cases unless @wz_cases.is_a? Array %>
 <div style="overflow-x: auto; overflow-y: auto;width:100%;">
   <table>
@@ -57,18 +59,15 @@
         <tr>
           <td><%= link_to item.id, wz_case_path(item) %></td>
           <td><%= item.vehicle.cityname %></td>
-          <td><%= link_to item.vehicle.plate, wz_case_path(item)  %></td>
+          <td><%= link_to item.vehicle.plate, wz_case_path(item) %></td>
           <td><%= item.vehicle.frame %></td>
           <td><%= item.vehicle.engine %></td>
-          <td><%= link_to item.get_wz_items.size, wz_case_path(item)  %></td>
-          <td><%= link_to item.get_wz_queries.size, wz_case_path(item)  %></td>
+          <td><%= link_to item.get_wz_items.size, wz_case_path(item) %></td>
+          <td><%= link_to item.get_wz_queries.size, wz_case_path(item) %></td>
           <td><%= link_to WzCase.get_des(item.status), wz_case_path(item) %></td>
           <td><%= link_to "删除记录", wz_case_path(item), method: :delete %></td>
         </tr>
     <% end %>
     </tbody>
   </table>
-  <a href=<%= begin_wz_cases_path %>>
-    <button class="btn btn-default w3ls-button">开始测试</button>
-  </a>
 </div>

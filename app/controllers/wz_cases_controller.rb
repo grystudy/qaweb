@@ -20,7 +20,11 @@ class WzCasesController < ApplicationController
       lst_vehicle = ::FileHelper.try_save_and_parse_data(file_input, "vehicle", request.remote_ip(), 4)
       if lst_vehicle
         lst_vehicle.each do |v_|
-          new_v = Vehicle.create({cityname: v_[0], plate: v_[1], frame: v_[3], engine: v_[2]})
+          plate_ = v_[1]
+          vehicles = Vehicle.where(plate: plate_)
+          found_same = vehicles.select{|i_| !i_.wz_case.nil?}
+          next if found_same.size > 0
+          new_v = Vehicle.create({cityname: v_[0], plate: plate_, frame: v_[3], engine: v_[2]})
           new_c = WzCase.create
           new_c.vehicle = new_v
           new_c.save
@@ -46,7 +50,7 @@ class WzCasesController < ApplicationController
 
   def destroy
     @item = WzCase.find(params[:id])
-    @item.destroy
+    @item.delete
     redirect_to wz_cases_path, notice: "删除成功!"
   end
 
