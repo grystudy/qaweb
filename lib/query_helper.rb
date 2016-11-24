@@ -5,7 +5,7 @@ class QueryHelper
     def loop chepai_
       city_info = WeizhangInfo.new.get_city_info
       unless city_info
-        puts 'no cityinfo response'
+        # puts 'no cityinfo response'
         return nil
       end
       city_info = city_info[:configs]
@@ -54,14 +54,14 @@ class QueryHelper
           begin
             response = WeizhangInfo.new(city_code, chepai, get_param_func.call(uuitem.vehicle.engine, engine_num), get_param_func.call(uuitem.vehicle.frame, frame_num)).get
           rescue Exception => ex_
-            p "exception !!!!!!!!!!!!!!!!!!!!!!  #{ex_.message}"
+            # p "exception !!!!!!!!!!!!!!!!!!!!!!  #{ex_.message}"
             sleep(30)
             retry
             Thread.exit
           end
           rspcode = response.weizhang_response_code
           if rspcode
-            p "#{chepai} #{rspcode}"
+            # p "#{chepai} #{rspcode}"
             $s_lock.synchronize do
               his_array = response.weizhang_histories
               case rspcode
