@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     collection do
       get 'begin'
       get 'confirm'
+      get 'delete_all'
     end
   end
   root 'wz_cases#index'

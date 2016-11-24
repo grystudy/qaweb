@@ -104,4 +104,11 @@ class WzCasesController < ApplicationController
     end
     cas.create_wz_item(info: cas.wz_query.info)
   end
+
+  def delete_all
+    WzCase.all.each do |v_|
+      v_.destroy
+    end
+    redirect_to wz_cases_path, notice: "ok!"
+  end
 end
